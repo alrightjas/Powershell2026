@@ -18,3 +18,31 @@ Get-Process | Select-Object Name, ProcessName, CPU
 Enter-PSSession -ComputerName "WIN-1OCJVG8RKKR.jas-dejesus.local" -Credential jas-dejesus.local\Administrator
 Get-NetIPAddress -AddressFamily IPv4 -InterfaceAlias "Ethernet"
 
+$Password = Read-Host "Enter password" -AsSecureString
+
+New-ADUser `
+-Name "studentID-Testuser" `
+-GivenName "studentID" `
+-Surname "Testuser" `
+-SamAccountName "S.Testuser" `
+-UserPrincipalName "S.Testuser@jas-dejesus.local" `
+-Path "OU=Managers,DC=jas-dejesus,DC=local" `
+-AccountPassword $Password `
+-Enabled $true
+
+$employees = @()
+
+$count = Read-Host "Enter the number of employees to add"
+
+for ($i = 1; $i -le $count; $i++) {
+    $firstName = Read-Host "Enter first name for employee $i"
+    $lastName = Read-Host "Enter last name for employee $i"
+    $employees += [PSCustomObject]@{
+        FirstName = $firstName
+        LastName  = $lastName
+    }
+}
+
+$employees
+
+$employees.Count
